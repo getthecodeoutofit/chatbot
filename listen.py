@@ -7,15 +7,19 @@ from gtts import gTTS  # google text to speech
 import webbrowser
 from youtubesearchpython import ChannelsSearch
 import myapi
-
+i=1
 def getmycommand():
+
     r = sr.Recognizer()
     
     with sr.Microphone() as source:
-        print("Please wait. Calibrating microphone...")   
+        global i
+        if i == 1:
+            print("Please wait. Calibrating microphone...")   
+            i +=1
         # listen for 5 seconds and calculate the ambient noise energy level  
-        r.energy_threshold = 400
-        r.pause_threshold = 0.6
+        r.energy_threshold = 600
+        r.pause_threshold = 1
         print("listening.....")
         audio = r.listen(source)
         print("Recognizing....")
@@ -73,7 +77,7 @@ def browsercommand(command):
 
     elif "python application" in command.lower():
         assistant_speaks("opening pycharm")
-        os.system("gnome-terminal --bash -c \"/home/ravi/pycharm-2023.2.3/bin/pycharm.sh\"")
+        os.system("gnome-terminal -- bash -c \"/home/ravi/pycharm-2023.2.3/bin/pycharm.sh\"")
 
     elif "code" in command.lower():
         assistant_speaks("opening.. visual code")
@@ -104,7 +108,7 @@ def othercommand(command):
         os.system("kill -9 $(pgrep bash)")
     elif "update" in command:
         assistant_speaks("updating the system...")
-        os.system("gnome-terminal --bash -c \"sudo apt update\"")
+        os.system("gnome-terminal -- bash -c \"sudo apt update\"")
         assistant_speaks("you will require to enter the password")
 
 
