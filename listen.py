@@ -1,17 +1,16 @@
 import os
 import datetime
-from googlesearch import search
+# from googlesearch import search
 import speech_recognition as sr
 import playsound  # to play saved mp3 file
 from gtts import gTTS  # google text to speech
 import webbrowser
 # from youtubesearchpython import ChannelsSearch
 import myapi
+
 i=1
 def getmycommand():
-
     r = sr.Recognizer()
-    
     with sr.Microphone() as source:
         global i
         if i == 1:
@@ -20,7 +19,7 @@ def getmycommand():
         # listen for 5 seconds and calculate the ambient noise energy level  
         r.energy_threshold = 300
         # r.adjust_for_ambient_noise(source, duration=0.5)
-        r.pause_threshold = 0.8
+        r.pause_threshold = 2
         print("listening.....")
         audio = r.listen(source)
         print("Recognizing....")
@@ -39,7 +38,6 @@ def assistant_speaks(output):
     myobj.save(mytext + ".mp3")
     playsound.playsound(mytext+".mp3", True)
     os.remove(mytext+".mp3")
-
 
 def browsercommand(command):
     if "google" in  command.lower() or "browser" in command.lower() and "search" in command:
@@ -81,17 +79,49 @@ def browsercommand(command):
         os.system("gnome-terminal -- bash -c \"/home/ravi/pycharm-2023.2.3/bin/pycharm.sh\"")
 
     elif "code" in command.lower():
-        assistant_speaks("opening.. visual code")
+        assistant_speaks("opening.. visual studio code")
         os.system("code .")
 
     elif "terminal" in command.lower():
         assistant_speaks("opening terminal")
         os.system("gnome-terminal")
 
+    elif "java application" in command.lower():
+        assistant_speaks("opening intelli j idea")
+        os.system("gnome-terminal -- bash -c \"/home/ravi/Idea/bin/idea.sh\"")
+
+def create(command):
+    if "named" in command:
+        check = "named"
+    elif "name" in command:
+        check = "name"
+    res = command.split(check,1)
+    name  = res[1]
+    if "file" in command or "text" in command:
+        assistant_speaks("creating text file named "+ name)
+        os.system(f"touch {name}.txt")
+    elif "folder" in command:
+        assistant_speaks("Creating a directory..")
+        os.system(f"mkdir {name}")
+
+def remove(command):
+    if "named" in command:
+        check = "named"
+    elif "name" in command:
+        check = "name"
+    res = command.split(check,1)
+    name  = res[1]
+    if "file" in command or "text" in command:
+        assistant_speaks("removing text file named "+ name)
+        os.system(f"rm -rf {name}.txt")
+    elif "folder" in command:
+        assistant_speaks("removing a directory..")
+        os.system(f"rmdir {name}")
+
+
 
 def greet():
     hour = datetime.datetime.now().hour
-    user = "Ravi"
     if hour >= 0 and hour < 12:
         assistant_speaks(f"GOOD MORNING")
     elif hour > 12 and hour < 17:
@@ -99,11 +129,15 @@ def greet():
     else:
         assistant_speaks(f"GOOD EVENING")
 
+def telltime():
+    second = datetime.datetime.now().second
+    minute = datetime.datetime.now().minute
+    hour  = datetime.datetime.now().hour
+    assistant_speaks(f"The time is {hour} .... {minute}")
 
 def othercommand(command):
     if "search" in command.lower():
         browsercommand(command)
-
     elif "close" in command or "stop" in command:
         assistant_speaks("okayy")
         os.system("kill -9 $(pgrep bash)")
@@ -114,45 +148,48 @@ def othercommand(command):
 
 
 greet()
-lang = "en"
+number = 1
 if __name__ == "__main__":
     while True:
-        if lang == "en":
+        query = getmycommand()
+        if "open" in query.lower() or "play" in query or "search" in query:
+            browsercommand(query)
+        
+        elif "time" in query.lower():
+            telltime()
 
-            query = getmycommand()
+        elif "take" in query.lower():
+            assistant_speaks("Taking screenshot")
+            os.system(f"xfce4-screenshooter -f -s {number}.png")
+            number += 1    
 
-            if "open" in query.lower() or "play" in query or "search" in query:
-                browsercommand(query)
-            elif "your name" in query.lower():
-                assistant_speaks("I dont have any name yet: ")
+        elif "your name" in query.lower():
+            assistant_speaks("I dont have any name yet: ")
 
+        elif "create" in query.lower():
+            create(query)
 
-            elif "introduce yourself" in query.lower():
-                intro = ('''I'm your friendly voice assistant,ready to assist you with your tasks.. What would you like me to do for you?''')
-                assistant_speaks(intro)
+        elif "remove" in query.lower():
+            remove(query)
 
-            elif "what" in query and "can" in query and "you" in query:
-                assistant_speaks('''I can answer your questions set alarms play music and much more. I'm always learning new things, so please don't hesitate to ask me anything.
-                I'm here to help you with all your needs, big or small.''')
+        elif "introduce yourself" in query.lower():
+            intro = ('''I'm your friendly voice assistant,ready to assist you with your tasks.. What would you like me to do for you?''')
+            assistant_speaks(intro)
 
-            elif "change language" in query:
-                lang = "hi"
+        elif "what" in query and "can" in query and "you" in query:
+            assistant_speaks('''I can answer your questions play music,creation or deletion of files or folder and much more. I'm always learning new things, so please don't hesitate to ask me anything.
+            I'm here to help you with all your needs, big or small.''')
 
-            elif "hello" in query.lower() or "whatsup" in  query:
-                assistant_speaks("Hello there, How can i help you: ")
+        elif "hello" in query.lower() or "whatsup" in  query:
+            assistant_speaks("Hello there, How can i help you: ")
+        
+        elif "shutdown" in  query.lower():
+            assistant_speaks("okay")
+            os.system("sudo shutdown -h now")
             
-            elif "shutdown" in  query.lower():
-
-                assistant_speaks("Are your sure: ")
-                b = input("yes/no: ")
-                if b == "yes":
-                    os.system("sudo shutdown -h now")
-                else:
-                    pass
-            elif "what" in query or "can" in query or "tell" in query or "which" in query:
-                a = myapi.AI(query)
-                assistant_speaks(a)
-
-            else:
-                othercommand(query)
-
+        elif "what" in query or "can" in query or "tell" in query or "which" in query:
+            a = myapi.AI(query)
+            assistant_speaks(a)
+        
+        else:
+            othercommand(query)
