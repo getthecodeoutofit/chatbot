@@ -5,7 +5,7 @@ import speech_recognition as sr
 import playsound  # to play saved mp3 file
 from gtts import gTTS  # google text to speech
 import webbrowser
-from youtubesearchpython import ChannelsSearch
+# from youtubesearchpython import ChannelsSearch
 import myapi
 i=1
 def getmycommand():
@@ -18,8 +18,9 @@ def getmycommand():
             print("Please wait. Calibrating microphone...")   
             i +=1
         # listen for 5 seconds and calculate the ambient noise energy level  
-        r.energy_threshold = 600
-        r.pause_threshold = 1
+        r.energy_threshold = 300
+        # r.adjust_for_ambient_noise(source, duration=0.5)
+        r.pause_threshold = 0.8
         print("listening.....")
         audio = r.listen(source)
         print("Recognizing....")
@@ -41,7 +42,7 @@ def assistant_speaks(output):
 
 
 def browsercommand(command):
-    if "google" in  command.lower() or "browser" in command.lower() or "search" in command:
+    if "google" in  command.lower() or "browser" in command.lower() and "search" in command:
         if "search" in  command:
             word = "search"
             res = command.split(word, 1)
