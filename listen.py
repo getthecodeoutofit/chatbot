@@ -5,7 +5,6 @@ import speech_recognition as sr
 import playsound  # to play saved mp3 file
 from gtts import gTTS  # google text to speech
 import webbrowser
-# from youtubesearchpython import ChannelsSearch
 import myapi
 
 i=1
@@ -16,10 +15,9 @@ def getmycommand():
         if i == 1:
             print("Please wait. Calibrating microphone...")   
             i +=1
-        # listen for 5 seconds and calculate the ambient noise energy level  
         r.energy_threshold = 300
         # r.adjust_for_ambient_noise(source, duration=0.5)
-        r.pause_threshold = 2
+        r.pause_threshold = 1.4
         print("listening.....")
         audio = r.listen(source)
         print("Recognizing....")
@@ -90,6 +88,10 @@ def browsercommand(command):
         assistant_speaks("opening intelli j idea")
         os.system("gnome-terminal -- bash -c \"/home/ravi/Idea/bin/idea.sh\"")
 
+    elif "college" in command.lower() or "erp" in command.lower():
+        assistant_speaks("Opening college website: ")
+        webbrowser.open("https://student.gehu.ac.in")    
+
 def create(command):
     if "named" in command:
         check = "named"
@@ -130,7 +132,7 @@ def greet():
         assistant_speaks(f"GOOD EVENING")
 
 def telltime():
-    second = datetime.datetime.now().second
+    # second = datetime.datetime.now().second
     minute = datetime.datetime.now().minute
     hour  = datetime.datetime.now().hour
     assistant_speaks(f"The time is {hour} .... {minute}")
@@ -158,9 +160,15 @@ if __name__ == "__main__":
         elif "time" in query.lower():
             telltime()
 
+        elif "hello" in query.lower() and "program" in query.lower():
+            print("sending request please wait....")
+            a = myapi.AI(query + "give the consize answer")
+            print(a)
+            assistant_speaks(a)
+
         elif "take" in query.lower():
             assistant_speaks("Taking screenshot")
-            os.system(f"xfce4-screenshooter -f -s {number}.png")
+            os.system(f"xfce4-screenshooter -f -s /home/ravi/chatbot/{number}.png")
             number += 1    
 
         elif "your name" in query.lower():
@@ -173,23 +181,19 @@ if __name__ == "__main__":
             remove(query)
 
         elif "introduce yourself" in query.lower():
-            intro = ('''I'm your friendly voice assistant,ready to assist you with your tasks.. What would you like me to do for you?''')
+            intro = ('''I'm your friendly voice assistant,ready to assist you with your tasks. What would you like me to do for you?''')
             assistant_speaks(intro)
 
-        elif "what" in query and "can" in query and "you" in query:
-            assistant_speaks('''I can answer your questions play music,creation or deletion of files or folder and much more. I'm always learning new things, so please don't hesitate to ask me anything.
-            I'm here to help you with all your needs, big or small.''')
+        elif "what" in query.lower() and "can" in query and "you" in query:
+            assistant_speaks('''I can answer your questions play music,create or delete files or folder and much more. I'm getting regular updates.''')
 
-        elif "hello" in query.lower() or "whatsup" in  query:
-            assistant_speaks("Hello there, How can i help you: ")
+        elif "hello" in query.lower() or "whatsup" in  query.lower():
+            assistant_speaks("Hello there! How can i help you: ")
         
         elif "shutdown" in  query.lower():
             assistant_speaks("okay")
             os.system("sudo shutdown -h now")
             
-        elif "what" in query or "can" in query or "tell" in query or "which" in query:
-            a = myapi.AI(query)
-            assistant_speaks(a)
         
         else:
             othercommand(query)

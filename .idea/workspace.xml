@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b59b4389-f85e-4d0e-8ff1-c2e72d088a62" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/listen.py" beforeDir="false" afterPath="$PROJECT_DIR$/listen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapi.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,15 +22,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -40,6 +41,7 @@
       <updated>1701061770371</updated>
       <workItem from="1701061772261" duration="4000" />
       <workItem from="1701065310960" duration="18000" />
+      <workItem from="1701222060383" duration="35000" />
     </task>
     <servers />
   </component>

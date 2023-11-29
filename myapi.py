@@ -3,9 +3,9 @@ from bardapi import Bard
 import os
 
 
-os.environ["_BARD_API_KEY"] = "dQhqUV9m23PkEG7XkITyHG7tK5CkAgqtT0PHrFikfSzHYvOGqvljYFohyz6z4fdwyz_s5g."
+os.environ["_BARD_API_KEY"]="dQhqUeA-ywNoXX_1D0sxuNTdoDJcmgKqDAmfC4Odq-_8BrkoqejLpXwFrrBARHClipDdXA."
 
 
 def AI(message):
-    a = Bard().get_answer(str(message+" tell in short"))
+    a = Bard().get_answer(str(message))
     return a['content']
